@@ -26,21 +26,6 @@ schedules:
         - main
     always: true
 
-#
-# Pipelines
-# Triggers this pipeline upon the completion of
-# the Push pipeline.
-#
-
-resources:
-  pipelines:
-    - pipeline: 'wrt-cloud-azops-pull'
-      source: 'wrt-cloud-azops-push'
-      trigger:
-        branches:
-          include:
-            - main
-
 variables:
   
   #
