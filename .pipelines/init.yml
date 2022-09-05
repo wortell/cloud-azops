@@ -28,7 +28,7 @@ parameters:
   displayName: Azure Tenant ID used for AzOps
   type: string
 - name: keyvault
-  displayName: Use the KeyVault instead of the Library Variable Group for AzOps Credentials
+  displayName: Integrate the KeyVault with the Library Variable Group for AzOps Credentials
   default: false
   type: boolean
   values:
