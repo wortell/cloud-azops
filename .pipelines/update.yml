@@ -1,7 +1,7 @@
 ---
 name: "Wortell Cloud AzOps - Update"
 
-# BEST IN THE WORLD
+# 
 # Triggers
 # Automated triggers are disabled for the Update pipelines
 # This pipeline should be run on a manual basis to avoid

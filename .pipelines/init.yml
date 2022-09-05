@@ -37,38 +37,23 @@ parameters:
 - name: keyvault
   displayName: An option to check if we are going to use the KeyVault instead of the Library Variable Group
   default: false
-  type: boolean
-  values:
-  - false
-  - true
+  type: string
 - name: pull
   displayName: Pull pipeline custom naming convention
   default: false
-  type: boolean
-  values:
-  - false
-  - true
+  type: string
 - name: push
   displayName: Push pipeline custom naming convention
   default: false
-  type: boolean
-  values:
-  - false
-  - true
+  type: string
 - name: validate
   displayName: Validate pipeline custom naming convention
   default: false
-  type: boolean
-  values:
-  - false
-  - true
+  type: string
 - name: update
   displayName: Update pipeline custom naming convention
   default: false
-  type: boolean
-  values:
-  - false
-  - true
+  type: string
 
 # 
 # Triggers
