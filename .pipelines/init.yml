@@ -35,8 +35,7 @@ parameters:
   - false
   - true
 - name: vars
-  displayName: 'NOTE: This is applied if no KeyVault is being used!
-  Custom naming convention for Variable Group in Library'
+  displayName: 'Custom naming convention for Variable Group in Library'
   default: wortell-cloud-azops-credentials
   type: string
 - name: pull
