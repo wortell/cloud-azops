@@ -35,7 +35,7 @@ parameters:
   - false
   - true
 - name: vars
-  displayName: Custom naming convention for Variable Group in Library
+  displayName: Custom naming convention for Library Variable Group
   default: wortell-cloud-azops-credentials
   type: string
 - name: pull
