@@ -30,6 +30,7 @@
             "Core.SkipChildResource": false,
             "Core.SkipResourceGroup": false,
             "Core.SkipResourceType": [
+                "Microsoft.RecoveryServices/vaults",
                 "microsoft.alertsmanagement/smartDetectorAlertRules",
                 "Microsoft.PowerPlatform/accounts",
                 "Microsoft.PowerPlatform/enterprisePolicies",
