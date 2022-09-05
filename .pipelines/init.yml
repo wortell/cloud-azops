@@ -33,7 +33,7 @@ parameters:
 - name: keyvault
   displayName: Use the KeyVault instead of the Library Variable Group for AzOps Credentials
   default: false
-  type: string
+  type: boolean
   values:
   - false
   - true
