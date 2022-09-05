@@ -107,7 +107,7 @@ process
         #
 
         $variableGroupObject | Add-Member -type NoteProperty -Name 'variables' -Value $variablesObject
-        $variableGroupObject | Add-Member -type NoteProperty -Name 'name' -Value $vars
+        $variableGroupObject | Add-Member -type NoteProperty -Name 'name' -Value $vargroupname
         $variableGroupObject | Add-Member -type NoteProperty -Name 'description' -Value 'Default AzOps Credentials Group, read the manual about how to convert this group to Azure KeyVault.'
     
         $Result = Invoke-RestMethod -Uri $URI -Method post -Headers $Headers -Body ($variableGroupObject | ConvertTo-Json -Depth 100) -ContentType "application/json"
