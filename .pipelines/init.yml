@@ -21,9 +21,12 @@ parameters:
 - name: project
   displayName: Name of the Azure DevOps project we are going to install AzOps in
   type: string
+- name: reponame
+  displayName: This is the Azure Repo name where the code is being deployed to
+  type: string
 - name: agentgroupname
   displayName: This is the Azure DevOps Pool of Agents used to build the code
-  default: Wortell Cloud AzOps
+  default: Azure Pipelines
   type: string
 - name: pipelinepath
   displayName: This is the Azure Pipelines path where to install AzOps in
