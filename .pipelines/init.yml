@@ -40,19 +40,19 @@ parameters:
   type: string
 - name: pull
   displayName: Custom naming convention for Pull pipeline
-  default: false
+  default: wortell-cloud-azops-pull
   type: string
 - name: push
   displayName: Custom naming convention for Push pipeline
-  default: false
+  default: wortell-cloud-azops-push
   type: string
 - name: validate
   displayName: Custom naming convention for Validate pipeline
-  default: false
+  default: wortell-cloud-azops-validate
   type: string
 - name: update
   displayName: Custom naming convention for Update pipeline
-  default: false
+  default: wortell-cloud-azops-update
   type: string
 
 # 
