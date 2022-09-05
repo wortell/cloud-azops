@@ -35,23 +35,23 @@ parameters:
   - false
   - true
 - name: vars
-  displayName: Custom naming convention for Library Variable Group
+  displayName: Naming for Library Variable Group
   default: wortell-cloud-azops-credentials
   type: string
 - name: pull
-  displayName: Custom naming convention for Pull pipeline
+  displayName: Naming for Pull pipeline
   default: wortell-cloud-azops-pull
   type: string
 - name: push
-  displayName: Custom naming convention for Push pipeline
+  displayName: Naming for Push pipeline
   default: wortell-cloud-azops-push
   type: string
 - name: validate
-  displayName: Custom naming convention for Validate pipeline
+  displayName: Naming for Validate pipeline
   default: wortell-cloud-azops-validate
   type: string
 - name: update
-  displayName: Custom naming convention for Update pipeline
+  displayName: Naming for Update pipeline
   default: wortell-cloud-azops-update
   type: string
 
