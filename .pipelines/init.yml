@@ -15,9 +15,6 @@ name: "Wortell Cloud AzOps - Init"
 #
 
 parameters:
-- name: sc
-  displayName: Service Connection used for AzOps
-  type: string
 - name: armclientid
   displayName: Azure AD App Registration Client ID used for AzOps
   type: string
