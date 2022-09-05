@@ -29,19 +29,6 @@ variables:
 
   commit: 'Update commit'
 
-#
-# Resources
-# Provides the ability to connect to the GitHub repository
-# via a pre-defined Service Connection.
-#
-
-resources:
-  repositories:
-  - repository: Accelerator
-    type: github
-    endpoint: GitHub
-    name: Azure/AzOps-Accelerator
-
 jobs:
 
   - job: update
