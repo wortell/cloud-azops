@@ -34,7 +34,7 @@ schedules:
 
 resources:
   pipelines:
-    - pipeline: 'Pull'
+    - pipeline: 'Wortell Cloud AzOps - Pull'
       source: 'Wortell Cloud AzOps - Push'
       trigger:
         branches:

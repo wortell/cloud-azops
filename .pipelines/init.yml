@@ -82,7 +82,7 @@ trigger: none
 
 resources:
   pipelines:
-    - pipeline: 'Init'
+    - pipeline: 'Wortell Cloud AzOps - Init'
       source: 'Wortell Cloud AzOps - Pull'
       trigger:
         branches:
