@@ -1,7 +1,7 @@
 ---
 name: "AzOps - Update"
 
-#
+# BEST IN THE WORLD
 # Triggers
 # Automated triggers are disabled for the Update pipelines
 # This pipeline should be run on a manual basis to avoid
@@ -68,15 +68,6 @@ jobs:
         path: "origin"
 
       #
-      # Checkout
-      # Checks-out the repository
-      # Repo: upstream
-      #
-
-      - checkout: Accelerator
-        path: "upstream"
-
-      #
       # Configure
       # Set global options
       #
@@ -89,6 +80,23 @@ jobs:
           script: |
             git config user.name "Azure DevOps"
             git config user.email "azuredevops@microsoft.com"
+
+      #
+      # Checkout
+      # Checks-out the repository
+      # Repo: upstream
+      #
+
+      - task: PowerShell@2
+        displayName: Checkout Repo
+        inputs:
+          targetType: 'inline'
+          script: |
+            Remove-Item upstream -Recurse -Force -ErrorAction Ignore
+            git clone https://github.com/wortell/cloud-azops upstream
+            cd upstream
+            git checkout main
+          workingDirectory: '$(Pipeline.Workspace)' 
 
       #
       # Copy
