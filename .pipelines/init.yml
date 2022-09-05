@@ -30,28 +30,31 @@ parameters:
 - name: armtenantid
   displayName: Azure Tenant ID used for AzOps
   type: string
-- name: vars
-  displayName: Variable Group in Library used for AzOps custom naming convention
-  default: wortell-cloud-azops-credentials
-  type: string
 - name: keyvault
-  displayName: An option to check if we are going to use the KeyVault instead of the Library Variable Group
+  displayName: Use the KeyVault instead of the Library Variable Group for AzOps Credentials
   default: false
   type: string
+  values:
+  - false
+  - true
+- name: vars
+  displayName: Custom naming convention for Variable Group in Library
+  default: wortell-cloud-azops-credentials
+  type: string
 - name: pull
-  displayName: Pull pipeline custom naming convention
+  displayName: Custom naming convention for Pull pipeline
   default: false
   type: string
 - name: push
-  displayName: Push pipeline custom naming convention
+  displayName: Custom naming convention for Push pipeline
   default: false
   type: string
 - name: validate
-  displayName: Validate pipeline custom naming convention
+  displayName: Custom naming convention for Validate pipeline
   default: false
   type: string
 - name: update
-  displayName: Update pipeline custom naming convention
+  displayName: Custom naming convention for Update pipeline
   default: false
   type: string
 
