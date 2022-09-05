@@ -1,5 +1,5 @@
 ---
-name: "Wortell Cloud AzOps - Init"
+name: "wrt-azops-init"
 
 # 
 # Parameters
@@ -30,7 +30,7 @@ parameters:
   type: string
 - name: pipelinepath
   displayName: This is the Azure Pipelines path where to install AzOps in
-  default: Wortell Cloud AzOps
+  default: Wortell Cloud Operations
   type: string
 - name: armclientid
   displayName: Azure AD App Registration Client ID used for AzOps
@@ -46,23 +46,23 @@ parameters:
   type: string
 - name: vargroupname
   displayName: Naming for Library Variable Group
-  default: wortell-cloud-azops-credentials
+  default: wrt-azops-credentials
   type: string
 - name: pullname
   displayName: Naming for Pull pipeline
-  default: Wortell Cloud AzOps - Pull
+  default: wrt-azops-pull
   type: string
 - name: pushname
   displayName: Naming for Push pipeline
-  default: Wortell Cloud AzOps - Push
+  default: wrt-azops-push
   type: string
 - name: validatename
   displayName: Naming for Validate pipeline
-  default: Wortell Cloud AzOps - Validate
+  default: wrt-azops-validate
   type: string
 - name: updatename
   displayName: Naming for Update pipeline
-  default: Wortell Cloud AzOps - Update
+  default: wrt-azops-update
   type: string
 
 # 

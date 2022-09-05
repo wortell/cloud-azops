@@ -1,5 +1,5 @@
 ---
-name: "Wortell Cloud AzOps - Pull"
+name: "wrt-azops-pull"
 
 # 
 # Triggers
@@ -34,8 +34,8 @@ schedules:
 
 resources:
   pipelines:
-    - pipeline: 'Wortell Cloud AzOps - Pull'
-      source: 'Wortell Cloud AzOps - Push'
+    - pipeline: 'wrt-azops-pull'
+      source: 'wrt-azops-push'
       trigger:
         branches:
           include:

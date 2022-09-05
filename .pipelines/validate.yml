@@ -1,5 +1,5 @@
 ---
-name: "Wortell Cloud AzOps - Validate"
+name: "wrt-azops-validate"
 
 #
 # Triggers
