@@ -74,21 +74,6 @@ parameters:
 
 trigger: none
 
-#
-# Pipelines
-# Triggers this pipeline upon the completion of
-# the Init pipeline.
-#
-
-resources:
-  pipelines:
-    - pipeline: 'Wortell Cloud AzOps - Init'
-      source: 'Wortell Cloud AzOps - Pull'
-      trigger:
-        branches:
-          include:
-            - main
-
 jobs:
 
   - job: init
