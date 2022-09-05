@@ -50,19 +50,19 @@ parameters:
   type: string
 - name: pullname
   displayName: Naming for Pull pipeline
-  default: Pull
+  default: Wortell Cloud AzOps - Pull
   type: string
 - name: pushname
   displayName: Naming for Push pipeline
-  default: Push
+  default: Wortell Cloud AzOps - Push
   type: string
 - name: validatename
   displayName: Naming for Validate pipeline
-  default: Validate
+  default: Wortell Cloud AzOps - Validate
   type: string
 - name: updatename
   displayName: Naming for Update pipeline
-  default: Update
+  default: Wortell Cloud AzOps - Update
   type: string
 
 # 
