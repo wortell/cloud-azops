@@ -134,6 +134,7 @@ jobs:
           workingDirectory: "../origin"
           script: |
             az repos pr create \
+              --auto-complete $true \
               --title "Azure Pipelines" \
               --description "New pipeline version available from the upstream repository." \
               --source-branch "$(branch)" \
