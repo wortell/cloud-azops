@@ -110,7 +110,7 @@ jobs:
         displayName: 'Create Variable Group'
         inputs:
           targetType: 'filePath'
-          filePath: '.powershell\New-AzOpsVariableGroup.ps1'
+          filePath: '.powershell/New-AzOpsVariableGroup.ps1'
           arguments: >
             -organization "${{ parameters.organization }}"
             -project "${{ parameters.project }}"
@@ -130,7 +130,7 @@ jobs:
         displayName: 'Create Pull Pipeline'
         inputs:
           targetType: 'filePath'
-          filePath: '.powershell\New-AzOpsPullPipeline.ps1'
+          filePath: '.powershell/New-AzOpsPullPipeline.ps1'
           arguments: >
             -organization "${{ parameters.organization }}"
             -project "${{ parameters.project }}"
@@ -149,7 +149,7 @@ jobs:
         displayName: 'Create Push Pipeline'
         inputs:
           targetType: 'filePath'
-          filePath: '.powershell\New-AzOpsPushPipeline.ps1'
+          filePath: '.powershell/New-AzOpsPushPipeline.ps1'
           arguments: >
             -organization "${{ parameters.organization }}"
             -project "${{ parameters.project }}"
@@ -168,7 +168,7 @@ jobs:
         displayName: 'Create Update Pipeline'
         inputs:
           targetType: 'filePath'
-          filePath: '.powershell\New-AzOpsUpdatePipeline.ps1'
+          filePath: '.powershell/New-AzOpsUpdatePipeline.ps1'
           arguments: >
             -organization "${{ parameters.organization }}"
             -project "${{ parameters.project }}"
@@ -187,7 +187,7 @@ jobs:
         displayName: 'Create Validate Pipeline'
         inputs:
           targetType: 'filePath'
-          filePath: '.powershell\New-AzOpsValidatePipeline.ps1'
+          filePath: '.powershell/New-AzOpsValidatePipeline.ps1'
           arguments: >
             -organization "${{ parameters.organization }}"
             -project "${{ parameters.project }}"
