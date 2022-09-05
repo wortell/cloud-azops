@@ -19,7 +19,7 @@ variables:
   # - AZOPS_MODULE_VERSION   
   #
 
-  - group: credentials
+  - group: wortell-cloud-azops-credentials
   
   #
   # modulesFolder

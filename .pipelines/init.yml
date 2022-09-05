@@ -1,5 +1,74 @@
 ---
-name: "Wortell Cloud AzOps - Pull"
+name: "Wortell Cloud AzOps - Init"
+
+# 
+# Parameters
+# Required parameters to install AzOps in the correct way.
+# Required parameters are:
+# - sc: Name of the service connection
+# 
+# Optional parameters are:
+# - pull: Default naming is Wortell Cloud AzOps - Pull, enter a diff value if required.
+# - push: Default naming is Wortell Cloud AzOps - Push, enter a diff value if required.
+# - validate: Default naming is Wortell Cloud AzOps - Validate, enter a diff value if required.
+# - update: Default naming is Wortell Cloud AzOps - Update, enter a diff value if required.
+#
+
+parameters:
+- name: sc
+  displayName: Service Connection used for AzOps
+  type: string
+- name: armclientid
+  displayName: Azure AD App Registration Client ID used for AzOps
+  type: string
+- name: armclientsecret
+  displayName: Azure AD App Registration Client Secret used for AzOps
+  type: string
+- name: armsubscriptionid
+  displayName: Azure Management Subscription ID used for AzOps
+  type: string
+- name: armtenantid
+  displayName: Azure Tenant ID used for AzOps
+  type: string
+- name: vars
+  displayName: Variable Group in Library used for AzOps custom naming convention
+  default: wortell-cloud-azops-credentials
+  type: string
+- name: keyvault
+  displayName: An option to check if we are going to use the KeyVault instead of the Library Variable Group
+  default: false
+  type: boolean
+  values:
+  - false
+  - true
+- name: pull
+  displayName: Pull pipeline custom naming convention
+  default: false
+  type: boolean
+  values:
+  - false
+  - true
+- name: push
+  displayName: Push pipeline custom naming convention
+  default: false
+  type: boolean
+  values:
+  - false
+  - true
+- name: validate
+  displayName: Validate pipeline custom naming convention
+  default: false
+  type: boolean
+  values:
+  - false
+  - true
+- name: update
+  displayName: Update pipeline custom naming convention
+  default: false
+  type: boolean
+  values:
+  - false
+  - true
 
 # 
 # Triggers
@@ -11,22 +80,6 @@ name: "Wortell Cloud AzOps - Pull"
 trigger: none
 
 #
-# Schedule
-# This is an optional trigger to pull the latest Azure
-# hierarchy into the Git repository in a recurring
-# manner.
-#
-# Default: Every 6 hours
-#
-
-schedules:
-  - cron: "0 */6 * * *"
-    branches:
-      include:
-        - main
-    always: true
-
-#
 # Pipelines
 # Triggers this pipeline upon the completion of
 # the Push pipeline.
@@ -34,8 +87,8 @@ schedules:
 
 resources:
   pipelines:
-    - pipeline: 'Pull'
-      source: 'Wortell Cloud AzOps - Push'
+    - pipeline: 'Init'
+      source: 'Wortell Cloud AzOps - Pull'
       trigger:
         branches:
           include:

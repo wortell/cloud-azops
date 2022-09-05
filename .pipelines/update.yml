@@ -1,5 +1,5 @@
 ---
-name: "AzOps - Update"
+name: "Wortell Cloud AzOps - Update"
 
 # BEST IN THE WORLD
 # Triggers
@@ -75,7 +75,7 @@ jobs:
       #
 
       - task: PowerShell@2
-        displayName: Checkout https://github.com/wortell/cloud-azops@main to origin
+        displayName: Checkout Repo
         inputs:
           targetType: 'inline'
           script: |

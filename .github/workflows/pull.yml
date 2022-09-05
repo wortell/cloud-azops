@@ -1,5 +1,5 @@
 ---
-name: "AzOps - Pull"
+name: "Wortell Cloud AzOps - Pull"
 
 on:
   #
@@ -41,7 +41,7 @@ on:
   #
 
   workflow_run:
-    workflows: ["AzOps - Push"]
+    workflows: ["Wortell Cloud AzOps - Push"]
     branches: [main]
     types:
       - completed
