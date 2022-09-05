@@ -34,8 +34,8 @@ schedules:
 
 resources:
   pipelines:
-    - pipeline: 'wrt-azops-pull'
-      source: 'wrt-azops-push'
+    - pipeline: 'wrt-cloud-azops-pull'
+      source: 'wrt-cloud-azops-push'
       trigger:
         branches:
           include:
