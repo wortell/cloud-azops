@@ -134,8 +134,8 @@ jobs:
         inputs:
           targetType: "inline"
           script: |
-            git config user.name "Azure DevOps"
-            git config user.email "azuredevops@microsoft.com"
+            git config user.name "Wortell Cloud AzOps"
+            git config user.email "wortellcloudazops@wortell.nl"
 
       #
       # Checkout
