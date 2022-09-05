@@ -80,7 +80,7 @@ process
         $body | Add-Member -MemberType NoteProperty -Name "type" -Value ("build")
         $body | Add-Member -MemberType NoteProperty -Name "queueStatus" -Value ("enabled")
 
-        $processDetails | Add-Member -MemberType NoteProperty -Name "yamlFilename" -Value (".pipelines\push.yml")
+        $processDetails | Add-Member -MemberType NoteProperty -Name "yamlFilename" -Value ("/.pipelines/push.yml")
         $processDetails | Add-Member -MemberType NoteProperty -Name "type" -Value (2)
 
         $repositoryDetails | Add-Member -MemberType NoteProperty -Name "id" -Value ($repositoryObject.id)
