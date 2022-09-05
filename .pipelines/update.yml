@@ -75,7 +75,7 @@ jobs:
       #
 
       - task: PowerShell@2
-        displayName: Checkout Repo
+        displayName: Checkout https://github.com/wortell/cloud-azops@main to origin
         inputs:
           targetType: 'inline'
           script: |
