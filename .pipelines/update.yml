@@ -65,8 +65,8 @@ jobs:
           targetType: "inline"
           workingDirectory: "../origin"
           script: |
-            git config user.name "Azure DevOps"
-            git config user.email "azuredevops@microsoft.com"
+            git config user.name "Wortell Cloud AzOps"
+            git config user.email "wortellcloudazops@wortell.nl"
 
       #
       # Checkout
@@ -135,8 +135,8 @@ jobs:
           script: |
             az repos pr create \
               --auto-complete $true \
-              --title "Azure Pipelines" \
-              --description "New pipeline version available from the upstream repository." \
+              --title "Wortell Cloud AzOps Update Version" \
+              --description "New version available from the upstream repository." \
               --source-branch "$(branch)" \
               --target-branch "main"
         env:
