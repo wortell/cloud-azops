@@ -28,14 +28,14 @@ parameters:
   displayName: Azure Tenant ID used for AzOps
   type: string
 - name: keyvault
-  displayName: Integrate the KeyVault with the Library Variable Group for AzOps Credentials
+  displayName: Integrate the KeyVault with the Library Variable Group Variables for AzOps Credentials
   default: false
   type: boolean
   values:
   - false
   - true
 - name: vars
-  displayName: 'Custom naming convention for Variable Group in Library'
+  displayName: Custom naming convention for Variable Group in Library
   default: wortell-cloud-azops-credentials
   type: string
 - name: pull
