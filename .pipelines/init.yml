@@ -46,23 +46,23 @@ parameters:
   type: string
 - name: vargroupname
   displayName: Naming for Library Variable Group
-  default: wrt-azops-credentials
+  default: wrt-cloud-azops-credentials
   type: string
 - name: pullname
   displayName: Naming for Pull pipeline
-  default: wrt-azops-pull
+  default: wrt-cloud-azops-pull
   type: string
 - name: pushname
   displayName: Naming for Push pipeline
-  default: wrt-azops-push
+  default: wrt-cloud-azops-push
   type: string
 - name: validatename
   displayName: Naming for Validate pipeline
-  default: wrt-azops-validate
+  default: wrt-cloud-azops-validate
   type: string
 - name: updatename
   displayName: Naming for Update pipeline
-  default: wrt-azops-update
+  default: wrt-cloud-azops-update
   type: string
 
 # 
