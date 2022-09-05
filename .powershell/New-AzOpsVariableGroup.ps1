@@ -60,57 +60,66 @@ process
     {
         $ErrorActionPreference = "Stop"
         
-        #
-        # ARM_CLIENT_ID added to the group Object
-        #
+        $existingVariableGroups = Invoke-RestMethod -Uri $URI -Method get -Headers $Headers
 
-        $variableObject = New-Object -TypeName PSObject
-        $variableObject | Add-Member -type NoteProperty -Name 'value' -Value $armclientid
-        $variableObject | Add-Member -type NoteProperty -Name 'isSecret' -Value $true
-        $variableObject | Add-Member -type NoteProperty -Name 'isReadOnly' -Value $true
+        if($existingVariableGroups.value.name -notlike "*$($vargroupname)*")
+        {
+            #
+            # ARM_CLIENT_ID added to the group Object
+            #
 
-        $variablesObject | Add-Member -type NoteProperty -Name 'ARM_CLIENT_ID' -Value $variableObject
+            $variableObject = New-Object -TypeName PSObject
+            $variableObject | Add-Member -type NoteProperty -Name 'value' -Value $armclientid
+            $variableObject | Add-Member -type NoteProperty -Name 'isSecret' -Value $true
+            $variableObject | Add-Member -type NoteProperty -Name 'isReadOnly' -Value $true
 
-        #
-        # ARM_CLIENT_SECRET added to the group Object
-        #
+            $variablesObject | Add-Member -type NoteProperty -Name 'ARM_CLIENT_ID' -Value $variableObject
 
-        $variableObject = New-Object -TypeName PSObject
-        $variableObject | Add-Member -type NoteProperty -Name 'value' -Value $armclientsecret
-        $variableObject | Add-Member -type NoteProperty -Name 'isSecret' -Value $true
-        $variableObject | Add-Member -type NoteProperty -Name 'isReadOnly' -Value $true
+            #
+            # ARM_CLIENT_SECRET added to the group Object
+            #
 
-        $variablesObject | Add-Member -type NoteProperty -Name 'ARM_CLIENT_SECRET' -Value $variableObject
+            $variableObject = New-Object -TypeName PSObject
+            $variableObject | Add-Member -type NoteProperty -Name 'value' -Value $armclientsecret
+            $variableObject | Add-Member -type NoteProperty -Name 'isSecret' -Value $true
+            $variableObject | Add-Member -type NoteProperty -Name 'isReadOnly' -Value $true
+
+            $variablesObject | Add-Member -type NoteProperty -Name 'ARM_CLIENT_SECRET' -Value $variableObject
+            
+            #
+            # ARM_SUBSCRIPTION_ID added to the group Object
+            #
+
+            $variableObject = New-Object -TypeName PSObject
+            $variableObject | Add-Member -type NoteProperty -Name 'value' -Value $armsubscriptionid
+            $variableObject | Add-Member -type NoteProperty -Name 'isReadOnly' -Value $true
+
+            $variablesObject | Add-Member -type NoteProperty -Name 'ARM_SUBSCRIPTION_ID' -Value $variableObject
+            
+            #
+            # ARM_TENANT_ID added to the group Object
+            #
+
+            $variableObject = New-Object -TypeName PSObject
+            $variableObject | Add-Member -type NoteProperty -Name 'value' -Value $armtenantid
+            $variableObject | Add-Member -type NoteProperty -Name 'isReadOnly' -Value $true
+
+            $variablesObject | Add-Member -type NoteProperty -Name 'ARM_TENANT_ID' -Value $variableObject
+
+            #
+            # Combining all variables to the variables property in our Variable Group
+            #
+
+            $variableGroupObject | Add-Member -type NoteProperty -Name 'variables' -Value $variablesObject
+            $variableGroupObject | Add-Member -type NoteProperty -Name 'name' -Value $vargroupname
+            $variableGroupObject | Add-Member -type NoteProperty -Name 'description' -Value 'Default AzOps Credentials Group, read the manual about how to convert this group to Azure KeyVault.'
         
-        #
-        # ARM_SUBSCRIPTION_ID added to the group Object
-        #
-
-        $variableObject = New-Object -TypeName PSObject
-        $variableObject | Add-Member -type NoteProperty -Name 'value' -Value $armsubscriptionid
-        $variableObject | Add-Member -type NoteProperty -Name 'isReadOnly' -Value $true
-
-        $variablesObject | Add-Member -type NoteProperty -Name 'ARM_SUBSCRIPTION_ID' -Value $variableObject
-        
-        #
-        # ARM_TENANT_ID added to the group Object
-        #
-
-        $variableObject = New-Object -TypeName PSObject
-        $variableObject | Add-Member -type NoteProperty -Name 'value' -Value $armtenantid
-        $variableObject | Add-Member -type NoteProperty -Name 'isReadOnly' -Value $true
-
-        $variablesObject | Add-Member -type NoteProperty -Name 'ARM_TENANT_ID' -Value $variableObject
-
-        #
-        # Combining all variables to the variables property in our Variable Group
-        #
-
-        $variableGroupObject | Add-Member -type NoteProperty -Name 'variables' -Value $variablesObject
-        $variableGroupObject | Add-Member -type NoteProperty -Name 'name' -Value $vargroupname
-        $variableGroupObject | Add-Member -type NoteProperty -Name 'description' -Value 'Default AzOps Credentials Group, read the manual about how to convert this group to Azure KeyVault.'
-    
-        $Result = Invoke-RestMethod -Uri $URI -Method post -Headers $Headers -Body ($variableGroupObject | ConvertTo-Json -Depth 100) -ContentType "application/json"
+            $Result = Invoke-RestMethod -Uri $URI -Method post -Headers $Headers -Body ($variableGroupObject | ConvertTo-Json -Depth 100) -ContentType "application/json"
+        }
+        else
+        {
+            Write-Host "Variable Group already exists."
+        }
     }
     catch
     {
