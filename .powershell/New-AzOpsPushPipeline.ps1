@@ -61,6 +61,7 @@ begin
     $bodyDetails = New-Object -TypeName PSObject -Property @{}
     $processDetails = New-Object -TypeName PSObject -Property @{}
     $process = New-Object -TypeName PSObject -Property @{}
+    $triggers = @()
 
     $repositoryURI = $URIOrga + "_apis/git/repositories?api-version=5.1"
     $repositoryObject = Invoke-RestMethod -Uri $repositoryURI -Method get -Headers $Headers
@@ -90,9 +91,20 @@ process
         $repositoryDetails | Add-Member -MemberType NoteProperty -Name "clean" -Value ($null)
         $repositoryDetails | Add-Member -MemberType NoteProperty -Name "checkoutSubmodules" -Value ($false)
 
+        $triggerCI = New-Object -TypeName PSObject -Property @{
+            branchFilters = ""
+            pathFilters = ""
+            settingsSourceType = 2
+            batchChanges = $false
+            maxConcurrentBuildsPerBranch = 1
+            triggerType = "continuousIntegration"
+        }
+        $triggers += $triggerCI
+        
         $body | Add-Member -MemberType NoteProperty -Name "process" -Value ($processDetails)
         $body | Add-Member -MemberType NoteProperty -Name "queue" -Value ($queue)
         $body | Add-Member -MemberType NoteProperty -Name "repository" -Value ($repositoryDetails)
+        $body | Add-Member -MemberType NoteProperty -Name "triggers" -Value @($triggers)
         
         $Result = Invoke-RestMethod -Uri $definitionURI -Method post -Headers $Headers -Body ($body | ConvertTo-Json -Depth 100) -ContentType "application/json"
 
