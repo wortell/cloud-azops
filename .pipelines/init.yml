@@ -2,6 +2,8 @@
 name: "wrt-azops-init"
 
 # 
+# Training AzOps
+# 
 # Parameters
 # Required parameters to install AzOps in the correct way.
 # Required parameters are:
