@@ -110,6 +110,19 @@ process
         $variableGroupObject | Add-Member -type NoteProperty -Name 'name' -Value $vargroupname
         $variableGroupObject | Add-Member -type NoteProperty -Name 'description' -Value 'Default AzOps Credentials Group, read the manual about how to convert this group to Azure KeyVault.'
     
+        $variableGroups = Invoke-RestMethod -Uri $URI -Method get -Headers $Headers
+        foreach($variableGroup in $variableGroups.value)
+        {
+            if($variableGroup.name -eq $vargroupname)
+            {
+                $guid = New-Guid
+                $vargroupname = $vargroupname + "-$(($guid.Guid).Substring(0,4))"
+                $variableGroupObject | Add-Member -type NoteProperty -Name 'name' -Value $vargroupname
+
+                Write-Host "We had to change the variable group name since it is already existing to: $vargroupname"
+            }
+        }
+
         $Result = Invoke-RestMethod -Uri $URI -Method post -Headers $Headers -Body ($variableGroupObject | ConvertTo-Json -Depth 100) -ContentType "application/json"
     }
     catch
@@ -122,6 +135,6 @@ end
 {
     if($Result | Get-Member | Where-Object {$_.Name -like "*id*"})
     {
-        Write-Host "We succesfully created the Variable Group with id $($Result.id)."
+        Write-Host "We succesfully created the Variable Group with id: $($Result.id)."
     }
 }

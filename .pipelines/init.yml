@@ -39,7 +39,7 @@ parameters:
   type: string
 - name: armclientsecret
   displayName: Azure AD App Registration Client Secret used for AzOps
-  type: string
+  type: secret
 - name: armsubscriptionid
   displayName: Azure Management Subscription ID used for AzOps
   type: string
@@ -66,6 +66,12 @@ parameters:
   displayName: Naming for Update pipeline
   default: wrt-cloud-azops-update
   type: string
+- name: approval
+  displayName: Fill in the e-mail address to approve the installation
+  type: string
+- name: approvaluri
+  displayName: Paste the URI of the manual so you can complete the installation
+  type: string
 
 # 
 # Triggers
@@ -84,11 +90,19 @@ jobs:
     # Init
     #
 
-    displayName: "Init"
+    displayName: "Init Repo and Variable Group"
     pool:
       vmImage: "ubuntu-20.04"
 
     steps:
+
+      #
+      # Checkout
+      # Set checkout self
+      #
+
+      - checkout: self
+        persistCredentials: true
 
       #
       # Configure
@@ -102,20 +116,21 @@ jobs:
           script: |
             git config user.name "Wortell Cloud AzOps"
             git config user.email "wortellcloudazops@wortell.nl"
-
+            
       #
       # Initialize
       # Generate new state data
       #
 
       - task: PowerShell@2
-        displayName: 'Create Variable Group'
+        displayName: 'Create Desired State Repository'
         inputs:
           targetType: 'filePath'
-          filePath: '.powershell/New-AzOpsVariableGroup.ps1'
+          filePath: '.powershell/.azdevops/New-AzOpsRepository.ps1'
           arguments: >
             -organization "${{ parameters.organization }}"
             -project "${{ parameters.project }}"
+            -projectid "$(System.TeamProjectId)"
             -armtenantid "${{ parameters.armtenantid }}"
             -armclientid "${{ parameters.armclientid }}"
             -armclientsecret "${{ parameters.armclientsecret }}"
@@ -129,15 +144,75 @@ jobs:
       #
 
       - task: PowerShell@2
+        displayName: 'Create Variable Group'
+        inputs:
+          targetType: 'filePath'
+          filePath: '.powershell/.azdevops/New-AzOpsVariableGroup.ps1'
+          arguments: >
+            -organization "${{ parameters.organization }}"
+            -project "${{ parameters.project }}"
+            -armtenantid "${{ parameters.armtenantid }}"
+            -armclientid "${{ parameters.armclientid }}"
+            -armclientsecret "${{ parameters.armclientsecret }}"
+            -armsubscriptionid "${{ parameters.armsubscriptionid }}"
+            -vargroupname "${{ parameters.vargroupname }}"
+            -SYSTEM_ACCESSTOKEN "$(System.AccessToken)"
+
+  - job: pipelines
+  
+    #
+    # Init
+    #
+
+    displayName: "AzOps Pipelines"
+    pool:
+      vmImage: "ubuntu-20.04"
+
+    variables: 
+      repoId: $[ dependencies.init.outputs['setVariable.repoId'] ]
+      repoDesiredStateName: $[ dependencies.init.outputs['setVariable.repoDesiredStateName'] ]
+    
+    steps:
+
+      #
+      # Checkout
+      # Set checkout variable $(repoDesiredStateName)
+      #
+
+      - checkout: $(repoDesiredStateName)
+        persistCredentials: true
+
+      #
+      # Configure
+      # Set global options
+      #
+
+      - task: Bash@3
+        displayName: "Configure"
+        inputs:
+          targetType: "inline"
+          script: |
+            git config user.name "Wortell Cloud AzOps"
+            git config user.email "wortellcloudazops@wortell.nl"
+            
+      #
+      # Initialize
+      # Generate new state data
+      #
+
+      - task: PowerShell@2
         displayName: 'Create Pull Pipeline'
         inputs:
           targetType: 'filePath'
-          filePath: '.powershell/New-AzOpsPullPipeline.ps1'
+          filePath: '.powershell/.azdevops/New-AzOpsPullPipeline.ps1'
           arguments: >
+            -AgentDirectory "$(Agent.BuildDirectory)"
             -organization "${{ parameters.organization }}"
             -project "${{ parameters.project }}"
             -agentgroupname "${{ parameters.agentgroupname }}"
             -reponame "${{ parameters.reponame }}"
+            -repoDesiredStateName "$(repoDesiredStateName)"
+            -repoid "$(repositoryId)"
             -pipelinepath "${{ parameters.pipelinepath }}"
             -pullname "${{ parameters.pullname }}"
             -SYSTEM_ACCESSTOKEN "$(System.AccessToken)"
@@ -151,12 +226,14 @@ jobs:
         displayName: 'Create Push Pipeline'
         inputs:
           targetType: 'filePath'
-          filePath: '.powershell/New-AzOpsPushPipeline.ps1'
+          filePath: '.powershell/.azdevops/New-AzOpsPushPipeline.ps1'
           arguments: >
             -organization "${{ parameters.organization }}"
             -project "${{ parameters.project }}"
             -agentgroupname "${{ parameters.agentgroupname }}"
             -reponame "${{ parameters.reponame }}"
+            -repoDesiredStateName "$(repoDesiredStateName)"
+            -repoid "$(repositoryId)"
             -pipelinepath "${{ parameters.pipelinepath }}"
             -pushname "${{ parameters.pushname }}"
             -SYSTEM_ACCESSTOKEN "$(System.AccessToken)"
@@ -170,12 +247,14 @@ jobs:
         displayName: 'Create Update Pipeline'
         inputs:
           targetType: 'filePath'
-          filePath: '.powershell/New-AzOpsUpdatePipeline.ps1'
+          filePath: '.powershell/.azdevops/New-AzOpsUpdatePipeline.ps1'
           arguments: >
             -organization "${{ parameters.organization }}"
             -project "${{ parameters.project }}"
             -agentgroupname "${{ parameters.agentgroupname }}"
             -reponame "${{ parameters.reponame }}"
+            -repoDesiredStateName "$(repoDesiredStateName)"
+            -repoid "$(repositoryId)"
             -pipelinepath "${{ parameters.pipelinepath }}"
             -updatename "${{ parameters.updatename }}"
             -SYSTEM_ACCESSTOKEN "$(System.AccessToken)"
@@ -189,12 +268,33 @@ jobs:
         displayName: 'Create Validate Pipeline'
         inputs:
           targetType: 'filePath'
-          filePath: '.powershell/New-AzOpsValidatePipeline.ps1'
+          filePath: '.powershell/.azdevops/New-AzOpsValidatePipeline.ps1'
           arguments: >
             -organization "${{ parameters.organization }}"
             -project "${{ parameters.project }}"
             -agentgroupname "${{ parameters.agentgroupname }}"
             -reponame "${{ parameters.reponame }}"
+            -repoDesiredStateName "$(repoDesiredStateName)"
+            -repoid "$(repositoryId)"
             -pipelinepath "${{ parameters.pipelinepath }}"
             -validatename "${{ parameters.validatename }}"
+            -SYSTEM_ACCESSTOKEN "$(System.AccessToken)"
+            
+      #
+      # Initialize
+      # Generate new state data
+      #
+
+      - task: PowerShell@2
+        displayName: 'Wait for Approval'
+        inputs:
+          targetType: 'filePath'
+          filePath: '.powershell/.azdevops/New-AzOpsWaitforApproval.ps1'
+          arguments: >
+            -approvaluri "${{ parameters.approvaluri }}"
+            -approver "${{ parameters.approver }}"
+            -organization "${{ parameters.organization }}"
+            -project "${{ parameters.project }}"
+            -definitionid "$(System.DefinitionId)"
+            -buildid "$(Build.BuildId)"
             -SYSTEM_ACCESSTOKEN "$(System.AccessToken)"
