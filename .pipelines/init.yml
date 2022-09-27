@@ -39,7 +39,7 @@ parameters:
   type: string
 - name: armclientsecret
   displayName: Azure AD App Registration Client Secret used for AzOps
-  type: secret
+  type: string
 - name: armsubscriptionid
   displayName: Azure Management Subscription ID used for AzOps
   type: string
@@ -66,7 +66,7 @@ parameters:
   displayName: Naming for Update pipeline
   default: wrt-cloud-azops-update
   type: string
-- name: approval
+- name: approver
   displayName: Fill in the e-mail address to approve the installation
   type: string
 - name: approvaluri
@@ -90,7 +90,7 @@ jobs:
     # Init
     #
 
-    displayName: "Init Repo and Variable Group"
+    displayName: "AzOps Init Repo and Variable Group"
     pool:
       vmImage: "ubuntu-20.04"
 
@@ -123,27 +123,6 @@ jobs:
       #
 
       - task: PowerShell@2
-        displayName: 'Create Desired State Repository'
-        inputs:
-          targetType: 'filePath'
-          filePath: '.powershell/.azdevops/New-AzOpsRepository.ps1'
-          arguments: >
-            -organization "${{ parameters.organization }}"
-            -project "${{ parameters.project }}"
-            -projectid "$(System.TeamProjectId)"
-            -armtenantid "${{ parameters.armtenantid }}"
-            -armclientid "${{ parameters.armclientid }}"
-            -armclientsecret "${{ parameters.armclientsecret }}"
-            -armsubscriptionid "${{ parameters.armsubscriptionid }}"
-            -vargroupname "${{ parameters.vargroupname }}"
-            -SYSTEM_ACCESSTOKEN "$(System.AccessToken)"
-
-      #
-      # Initialize
-      # Generate new state data
-      #
-
-      - task: PowerShell@2
         displayName: 'Create Variable Group'
         inputs:
           targetType: 'filePath'
@@ -158,43 +137,6 @@ jobs:
             -vargroupname "${{ parameters.vargroupname }}"
             -SYSTEM_ACCESSTOKEN "$(System.AccessToken)"
 
-  - job: pipelines
-  
-    #
-    # Init
-    #
-
-    displayName: "AzOps Pipelines"
-    pool:
-      vmImage: "ubuntu-20.04"
-
-    variables: 
-      repoId: $[ dependencies.init.outputs['setVariable.repoId'] ]
-      repoDesiredStateName: $[ dependencies.init.outputs['setVariable.repoDesiredStateName'] ]
-    
-    steps:
-
-      #
-      # Checkout
-      # Set checkout variable $(repoDesiredStateName)
-      #
-
-      - checkout: $(repoDesiredStateName)
-        persistCredentials: true
-
-      #
-      # Configure
-      # Set global options
-      #
-
-      - task: Bash@3
-        displayName: "Configure"
-        inputs:
-          targetType: "inline"
-          script: |
-            git config user.name "Wortell Cloud AzOps"
-            git config user.email "wortellcloudazops@wortell.nl"
-            
       #
       # Initialize
       # Generate new state data
@@ -211,7 +153,6 @@ jobs:
             -project "${{ parameters.project }}"
             -agentgroupname "${{ parameters.agentgroupname }}"
             -reponame "${{ parameters.reponame }}"
-            -repoDesiredStateName "$(repoDesiredStateName)"
             -repoid "$(repositoryId)"
             -pipelinepath "${{ parameters.pipelinepath }}"
             -pullname "${{ parameters.pullname }}"
@@ -232,7 +173,6 @@ jobs:
             -project "${{ parameters.project }}"
             -agentgroupname "${{ parameters.agentgroupname }}"
             -reponame "${{ parameters.reponame }}"
-            -repoDesiredStateName "$(repoDesiredStateName)"
             -repoid "$(repositoryId)"
             -pipelinepath "${{ parameters.pipelinepath }}"
             -pushname "${{ parameters.pushname }}"
@@ -253,7 +193,6 @@ jobs:
             -project "${{ parameters.project }}"
             -agentgroupname "${{ parameters.agentgroupname }}"
             -reponame "${{ parameters.reponame }}"
-            -repoDesiredStateName "$(repoDesiredStateName)"
             -repoid "$(repositoryId)"
             -pipelinepath "${{ parameters.pipelinepath }}"
             -updatename "${{ parameters.updatename }}"
@@ -274,7 +213,6 @@ jobs:
             -project "${{ parameters.project }}"
             -agentgroupname "${{ parameters.agentgroupname }}"
             -reponame "${{ parameters.reponame }}"
-            -repoDesiredStateName "$(repoDesiredStateName)"
             -repoid "$(repositoryId)"
             -pipelinepath "${{ parameters.pipelinepath }}"
             -validatename "${{ parameters.validatename }}"

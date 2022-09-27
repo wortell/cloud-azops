@@ -90,7 +90,7 @@ process
 
         $repositoryDetails | Add-Member -MemberType NoteProperty -Name "id" -Value ($repoid)
         $repositoryDetails | Add-Member -MemberType NoteProperty -Name "type" -Value ("TfsGit")
-        $repositoryDetails | Add-Member -MemberType NoteProperty -Name "name" -Value ($repoDesiredStateName)
+        $repositoryDetails | Add-Member -MemberType NoteProperty -Name "name" -Value ($reponame)
         $repositoryDetails | Add-Member -MemberType NoteProperty -Name "defaultBranch" -Value ("main")
         $repositoryDetails | Add-Member -MemberType NoteProperty -Name "clean" -Value ($null)
         $repositoryDetails | Add-Member -MemberType NoteProperty -Name "checkoutSubmodules" -Value ($false)

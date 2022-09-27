@@ -33,10 +33,6 @@ param (
 
     [Parameter(Mandatory = $true)]
     [string]
-    $repoDesiredStateName,
-
-    [Parameter(Mandatory = $true)]
-    [string]
     $repoid,
 
     [Parameter(Mandatory = $true)]
@@ -54,8 +50,6 @@ param (
 
 begin
 {
-    . "$AgentDirectory/.powershell/.modules/Load-AzOpsRequiredModules.ps1" -AgentDirectory $AgentDirectory
-    
     $YAMLFilename = "update.yml"
 }
 process
@@ -64,17 +58,11 @@ process
     {
         $ErrorActionPreference = "Stop"
         
-        . "$AgentDirectory/.powershell/.azdevops/New-AzOpsPipelineYAML.ps1" `
-        -AgentDirectory $AgentDirectory `
-        -project $project `
-        -reponame $reponame `
-        -YAMLFilename $YAMLFilename
-    
         . "$AgentDirectory/.powershell/.azdevops/New-AzOpsPipelineDefinition.ps1" `
         -organization $organization `
         -project $project `
         -agentgroupname $agentgroupname `
-        -repoDesiredStateName $repoDesiredStateName `
+        -reponame $reponame `
         -repoid $repoid `
         -pipelinepath $pipelinepath `
         -pullname $pullname `

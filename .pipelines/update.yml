@@ -97,8 +97,9 @@ jobs:
           workingDirectory: ".."
           script: |
             test -f ./origin/.pipelines/patch.yml && rm -f ./origin/.pipelines/patch.yml
-            cp -R -v ./upstream/.pipelines/ ./origin/
-            cp -R -v ./upstream/.powershell/ ./origin/
+            cp -R -v -f ./upstream/.github/ ./origin/
+            cp -R -v -f ./upstream/.pipelines/ ./origin/
+            cp -R -v -f ./upstream/.powershell/ ./origin/
 
       #
       # Commit
