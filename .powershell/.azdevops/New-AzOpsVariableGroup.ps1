@@ -53,6 +53,7 @@ begin
 
     $variableGroupObject = New-Object -TypeName PSObject
     $variablesObject = New-Object -TypeName PSObject
+    $variablePermissionsObject = New-Object -TypeName PSObject
 }
 process
 {
@@ -119,11 +120,11 @@ process
                 $vargroupname = $vargroupname + "-$(($guid.Guid).Substring(0,4))"
                 $variableGroupObject | Add-Member -type NoteProperty -Name 'name' -Value $vargroupname
 
-                Write-Host "We had to change the variable group name since it is already existing to: $vargroupname"
+                Write-Host "We had to change the variable group name because it already exists to: $vargroupname"
             }
         }
 
-        $Result = Invoke-RestMethod -Uri $URI -Method post -Headers $Headers -Body ($variableGroupObject | ConvertTo-Json -Depth 100) -ContentType "application/json"
+        $Result = Invoke-RestMethod -Uri $URI -Method post -Headers $Headers -Body ($variableGroupObject | ConvertTo-Json -Depth 10) -ContentType "application/json"
     }
     catch
     {
@@ -136,5 +137,7 @@ end
     if($Result | Get-Member | Where-Object {$_.Name -like "*id*"})
     {
         Write-Host "We succesfully created the Variable Group with id: $($Result.id)."
+        Write-Host "##vso[task.setvariable variable=vargroupname]$vargroupname"
+        Write-Host "##vso[task.setvariable variable=vargroupid]$($Result.id)"
     }
 }

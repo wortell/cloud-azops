@@ -25,7 +25,7 @@ param (
 
     [Parameter(Mandatory = $true)]
     [string]
-    $repoDesiredStateName,
+    $reponame,
 
     [Parameter(Mandatory = $true)]
     [string]
@@ -33,11 +33,15 @@ param (
 
     [Parameter(Mandatory = $true)]
     [string]
+    $vargroupid,
+
+    [Parameter(Mandatory = $true)]
+    [string]
     $pipelinepath,
 
     [Parameter(Mandatory = $true)]
     [string]
-    $pullname,
+    $pipelinename,
     
     [Parameter(Mandatory = $true)]
     [string]
@@ -80,7 +84,7 @@ process
     {
         $ErrorActionPreference = "Stop"
         
-        $body | Add-Member -MemberType NoteProperty -Name "name" -Value ("$pullname")
+        $body | Add-Member -MemberType NoteProperty -Name "name" -Value ("$pipelinename")
         $body | Add-Member -MemberType NoteProperty -Name "path" -Value ("`\$pipelinepath")
         $body | Add-Member -MemberType NoteProperty -Name "type" -Value ("build")
         $body | Add-Member -MemberType NoteProperty -Name "queueStatus" -Value ("enabled")
@@ -109,6 +113,19 @@ process
         $body | Add-Member -MemberType NoteProperty -Name "queue" -Value ($queue)
         $body | Add-Member -MemberType NoteProperty -Name "repository" -Value ($repositoryDetails)
         $body | Add-Member -MemberType NoteProperty -Name "triggers" -Value @($triggers)
+
+        $Result = Invoke-RestMethod -Uri $definitionURI -Method post -Headers $Headers -Body ($body | ConvertTo-Json -Depth 100) -ContentType "application/json"
+
+        $varGroupPermissionsURI = "https://dev.azure.com/$($organization)/$()/_apis/pipelines/pipelinePermissions/variablegroup/$($vargroupid)?api-version=7.1-preview.1"
+        $varGroupPermissionsObject = Invoke-RestMethod -Uri $varGroupPermissionsURI -Method get -Headers $Headers
+
+        $varGroupPermission = New-Object -TypeName PSObject -Property @{}
+        $varGroupPermission | Add-Member -MemberType NoteProperty -Name "id" -Value $Result.id
+        $varGroupPermission | Add-Member -MemberType NoteProperty -Name "authorized" -Value $true
+
+        $varGroupPermissionsObject.pipelines += $varGroupPermission
+        
+        $Result = Invoke-RestMethod -Uri $varGroupPermissionsURI -Method Patch -Headers $Headers -Body ($varGroupPermissionsObject | ConvertTo-Json -Depth 100) -ContentType "application/json"
     }
     catch
     {
@@ -118,5 +135,5 @@ process
 }
 end
 {
-    Invoke-RestMethod -Uri $definitionURI -Method post -Headers $Headers -Body ($body | ConvertTo-Json -Depth 100) -ContentType "application/json"
+    
 }

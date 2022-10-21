@@ -37,11 +37,19 @@ param (
 
     [Parameter(Mandatory = $true)]
     [string]
+    $vargroupid,
+
+    [Parameter(Mandatory = $true)]
+    [string]
     $pipelinepath,
 
     [Parameter(Mandatory = $true)]
     [string]
-    $pullname,
+    $pipelinename,
+    
+    [Parameter(Mandatory = $true)]
+    [string]
+    $YAMLFilename,
     
     [Parameter(Mandatory = $true)]
     [string]
@@ -64,8 +72,9 @@ process
         -agentgroupname $agentgroupname `
         -reponame $reponame `
         -repoid $repoid `
+        -vargroupid $vargroupid `
         -pipelinepath $pipelinepath `
-        -pullname $pullname `
+        -pipelinename $pipelinename `
         -YAMLFilename $YAMLFilename `
         -SYSTEM_ACCESSTOKEN $SYSTEM_ACCESSTOKEN
     }

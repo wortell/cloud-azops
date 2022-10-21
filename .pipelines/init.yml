@@ -146,7 +146,7 @@ jobs:
         displayName: 'Create Pull Pipeline'
         inputs:
           targetType: 'filePath'
-          filePath: '.powershell/.azdevops/New-AzOpsPullPipeline.ps1'
+          filePath: '.powershell/.azdevops/New-AzOpsPipelineDefinition.ps1'
           arguments: >
             -AgentDirectory "$(Agent.BuildDirectory)"
             -organization "${{ parameters.organization }}"
@@ -154,8 +154,9 @@ jobs:
             -agentgroupname "${{ parameters.agentgroupname }}"
             -reponame "${{ parameters.reponame }}"
             -repoid "$(repositoryId)"
+            -vargroupid "$(vargroupid)"
             -pipelinepath "${{ parameters.pipelinepath }}"
-            -pullname "${{ parameters.pullname }}"
+            -pipelinename "${{ parameters.pullname }}"
             -SYSTEM_ACCESSTOKEN "$(System.AccessToken)"
 
       #
@@ -167,13 +168,14 @@ jobs:
         displayName: 'Create Push Pipeline'
         inputs:
           targetType: 'filePath'
-          filePath: '.powershell/.azdevops/New-AzOpsPushPipeline.ps1'
+          filePath: '.powershell/.azdevops/New-AzOpsPipelineDefinition.ps1'
           arguments: >
             -organization "${{ parameters.organization }}"
             -project "${{ parameters.project }}"
             -agentgroupname "${{ parameters.agentgroupname }}"
             -reponame "${{ parameters.reponame }}"
             -repoid "$(repositoryId)"
+            -vargroupid "$(vargroupid)"
             -pipelinepath "${{ parameters.pipelinepath }}"
             -pushname "${{ parameters.pushname }}"
             -SYSTEM_ACCESSTOKEN "$(System.AccessToken)"
@@ -187,13 +189,14 @@ jobs:
         displayName: 'Create Update Pipeline'
         inputs:
           targetType: 'filePath'
-          filePath: '.powershell/.azdevops/New-AzOpsUpdatePipeline.ps1'
+          filePath: '.powershell/.azdevops/New-AzOpsPipelineDefinition.ps1'
           arguments: >
             -organization "${{ parameters.organization }}"
             -project "${{ parameters.project }}"
             -agentgroupname "${{ parameters.agentgroupname }}"
             -reponame "${{ parameters.reponame }}"
             -repoid "$(repositoryId)"
+            -vargroupid "$(vargroupid)"
             -pipelinepath "${{ parameters.pipelinepath }}"
             -updatename "${{ parameters.updatename }}"
             -SYSTEM_ACCESSTOKEN "$(System.AccessToken)"
@@ -207,13 +210,14 @@ jobs:
         displayName: 'Create Validate Pipeline'
         inputs:
           targetType: 'filePath'
-          filePath: '.powershell/.azdevops/New-AzOpsValidatePipeline.ps1'
+          filePath: '.powershell/.azdevops/New-AzOpsPipelineDefinition.ps1'
           arguments: >
             -organization "${{ parameters.organization }}"
             -project "${{ parameters.project }}"
             -agentgroupname "${{ parameters.agentgroupname }}"
             -reponame "${{ parameters.reponame }}"
             -repoid "$(repositoryId)"
+            -vargroupid "$(vargroupid)"
             -pipelinepath "${{ parameters.pipelinepath }}"
             -validatename "${{ parameters.validatename }}"
             -SYSTEM_ACCESSTOKEN "$(System.AccessToken)"
